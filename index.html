@@ -1,0 +1,367 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+  <title>龙与幻想 · 温馨西幻游戏官方网站</title>
+
+  <!-- 引入 Google Fonts 与后备字体 -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cinzel+Decorative:wght@700&family=Cormorant+Garamond:wght@400;600;700&family=Noto+Serif+SC:wght@400;600;700&family=ZCOOL+XiaoWei&display=swap" rel="stylesheet">
+
+  <link rel="stylesheet" href="./style.css" />
+</head>
+<body>
+  <!-- 顶部玻璃拟态导航栏 (Logo、分区链接、预约 CTA) -->
+  <header class="navbar" id="navbar">
+    <div class="nav-container">
+      <div class="logo">
+        <span class="logo-icon">👑</span>
+        <span class="logo-text">龙与幻想</span>
+        <span class="logo-sub">DRAGON & FANTASY</span>
+      </div>
+      
+      <nav class="nav-links">
+        <a href="#hero" class="nav-link active">首尾帧序章</a>
+        <a href="#sectionLore" class="nav-link">世界观</a>
+        <a href="#sectionFeatures" class="nav-link">游戏特色</a>
+        <a href="#sectionCharacter" class="nav-link">旅途同伴</a>
+        <a href="#sectionPreOrder" class="nav-link">公测预约</a>
+      </nav>
+
+      <div class="nav-actions">
+        <a href="#sectionPreOrder" class="btn-primary-sm">立即预约 / 客户端</a>
+      </div>
+    </div>
+  </header>
+
+  <!-- 第一屏：首尾帧视听序章 (6秒全屏循环动画与沉浸交互) -->
+  <main class="hero" id="hero">
+    <!-- 全屏背景视频 -->
+    <video
+      id="bgVideo"
+      class="hero-video"
+      src="./assets/video/fantasy-journey.mp4"
+      poster="./assets/images/poster.jpg"
+      autoplay
+      muted
+      loop
+      playsinline
+      preload="auto"
+    ></video>
+
+    <!-- 背景音乐与环境音效 (默认静音，交互后解锁；内置 Web Audio API 实时合成器作为完美保障) -->
+    <audio id="bgm" src="./assets/audio/bgm.mp3" loop preload="auto"></audio>
+    <audio id="ambience" src="./assets/audio/ambience.mp3" loop preload="auto"></audio>
+
+    <!-- 视觉光影遮罩与质感层 -->
+    <div class="shade" id="shade"></div>
+    <div class="light" id="light"></div>
+    <div class="grain"></div>
+    <div class="magic-dust" id="magicDust"></div>
+
+    <!-- 左下角核心文案与剧情叙述 -->
+    <section class="hero-copy" id="heroCopy">
+      <div class="chapter-wrapper">
+        <span class="chapter-line"></span>
+        <p class="chapter" id="chapter">Chapter I</p>
+      </div>
+      <h1 class="title" id="title">龙与幻想</h1>
+      <p class="subtitle" id="subtitle">少年在金色树影下，最后一次俯望自己的家乡。</p>
+      
+      <div class="interaction-hint">
+        <span class="hint-icon">
+          <span class="pulse-ring"></span>
+          <span class="pulse-core"></span>
+        </span>
+        <p class="hint">按住画面暂停时间 · 松开继续旅途 · 在文案区滚轮切章</p>
+      </div>
+    </section>
+
+    <!-- 右侧章节时间轴导航 -->
+    <nav class="chapter-nav" id="chapterNav" aria-label="故事章节导航">
+      <button class="nav-item active" data-index="0" type="button">
+        <span class="nav-dot"></span>
+        <span class="nav-info">
+          <span class="nav-sub">0s - 2s</span>
+          <span class="nav-label">龙与幻想</span>
+        </span>
+      </button>
+      <button class="nav-item" data-index="1" type="button">
+        <span class="nav-dot"></span>
+        <span class="nav-info">
+          <span class="nav-sub">2s - 4s</span>
+          <span class="nav-label">风起之地</span>
+        </span>
+      </button>
+      <button class="nav-item" data-index="2" type="button">
+        <span class="nav-dot"></span>
+        <span class="nav-info">
+          <span class="nav-sub">4s - 6s</span>
+          <span class="nav-label">启程</span>
+        </span>
+      </button>
+    </nav>
+
+    <!-- 右上角声音控制开关 (集成 Web Audio API 实时生成西幻音效) -->
+    <button class="sound-toggle" id="soundToggle" type="button" aria-label="开关环境声音与音乐">
+      <span class="sound-waves">
+        <span class="bar bar-1"></span>
+        <span class="bar bar-2"></span>
+        <span class="bar bar-3"></span>
+      </span>
+      <span class="sound-text">Sound Off</span>
+    </button>
+
+    <!-- 底部居中：向下滑动探索游戏官网提示 -->
+    <div class="scroll-down-hint" id="scrollHint" role="button" tabindex="0" aria-label="向下滑动探索游戏官网">
+      <span class="scroll-text">向下探索 · ENTER THE REALM</span>
+      <span class="scroll-arrow">
+        <svg viewBox="0 0 24 24" width="22" height="22" stroke="currentColor" stroke-width="2" fill="none"><path d="M7 13l5 5 5-5M7 6l5 5 5-5"/></svg>
+      </span>
+    </div>
+  </main>
+
+  <!-- 第二屏：世界观 · 核心叙事与白垩王城 (World Lore) -->
+  <section class="lore-section" id="sectionLore">
+    <div class="section-container">
+      <div class="section-header">
+        <span class="section-tag">CHRONICLES OF WIND AND GOLD</span>
+        <h2 class="section-title">世界观 · 风起之地与金色诗篇</h2>
+        <p class="section-desc">当巨龙的传说成为古老王城图书馆里斑驳的细语，真正属于旅人的诗篇，才刚在晨光中苏醒。</p>
+      </div>
+
+      <div class="lore-grid">
+        <div class="lore-visual">
+          <div class="image-frame">
+            <img src="./assets/images/concept_castle.jpg" alt="白垩王城与秋风平原" class="lore-img" />
+            <div class="image-glow"></div>
+          </div>
+          <div class="lore-caption">
+            <span class="caption-location">📍 远古王城 · 圣白垩之都与金色风车平原</span>
+          </div>
+        </div>
+
+        <div class="lore-content">
+          <div class="lore-chapter-box">
+            <span class="lore-num">01</span>
+            <h3 class="lore-subtitle">白垩王城与微风平原</h3>
+            <p class="lore-text">王城矗立于平原之巅，清澈的溪流自金色落叶树林间穿流而过，古老的风车推动着整片大陆的生命脉搏。这里没有喧嚣的战火与沉重的枷锁，只有每天清晨准时洒在屋檐上的微温朝阳。</p>
+          </div>
+
+          <div class="lore-chapter-box">
+            <span class="lore-num">02</span>
+            <h3 class="lore-subtitle">启程者的星图罗盘</h3>
+            <p class="lore-text">在游戏中，你将扮演一位在温暖山谷中长大的少年。带上爷爷留下的星图罗盘，踩着落叶沙沙作响的山路，一步步走向广阔无垠的西幻大陆，去寻找传说中龙与魔法遗留下来的治愈奇迹。</p>
+          </div>
+
+          <div class="lore-quote">
+            “并非所有冒险都需要去斩杀恶龙。有时候，去远方看一眼未曾见过的风景，便是最伟大的旅程。”
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 第三屏：游戏特色 · 视听与沉浸探索 (Game Features) -->
+  <section class="features-section" id="sectionFeatures">
+    <div class="section-container">
+      <div class="section-header text-center">
+        <span class="section-tag">IMMERSIVE GAMEPLAY HIGHLIGHTS</span>
+        <h2 class="section-title">游戏特色 · 沉浸式温馨大世界</h2>
+        <p class="section-desc">以电影级美术表现与生成式环境音效，为您呈现前所未有的治愈系冒险体验。</p>
+      </div>
+
+      <div class="features-grid">
+        <div class="feature-card" data-tilt>
+          <div class="feature-icon-wrapper">
+            <span class="feature-icon">🌤️</span>
+            <div class="icon-glow"></div>
+          </div>
+          <h3 class="feature-title">实时气候与变幻光影</h3>
+          <p class="feature-text">采用高精度实时全局光照系统。从清晨林间的晨雾与丁达尔效应，到正午温暖的金光与黄昏的余晖，每一秒都在为你谱写独特的视觉诗篇。</p>
+          <ul class="feature-tags">
+            <li>全局光照</li>
+            <li>动态天气</li>
+            <li>丁达尔光斑</li>
+          </ul>
+        </div>
+
+        <div class="feature-card" data-tilt>
+          <div class="feature-icon-wrapper">
+            <span class="feature-icon">🗺️</span>
+            <div class="icon-glow"></div>
+          </div>
+          <h3 class="feature-title">无缝治愈系大世界</h3>
+          <p class="feature-text">告别繁琐的加载进度条与空气墙。越过清澈溪流、攀登钟塔、乘着微风滑翔，整片温馨且充满惊喜的大陆任由你自由探索与驻足流连。</p>
+          <ul class="feature-tags">
+            <li>无缝大地图</li>
+            <li>风场滑翔</li>
+            <li>自由攀爬</li>
+          </ul>
+        </div>
+
+        <div class="feature-card" data-tilt>
+          <div class="feature-icon-wrapper">
+            <span class="feature-icon">🎵</span>
+            <div class="icon-glow"></div>
+          </div>
+          <h3 class="feature-title">自适应管弦与环境交互音</h3>
+          <p class="feature-text">由知名管弦乐团倾情录制与底层实时合成音频引擎驱动。背景音乐与自然风声、鸟鸣、脚步声，会根据你的探索轨迹与昼夜交替动态演变。</p>
+          <ul class="feature-tags">
+            <li>管弦实录</li>
+            <li>生成式音效</li>
+            <li>空间听感</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 第四屏：旅途同伴 · 角色预览 (Character Showcase) -->
+  <section class="character-section" id="sectionCharacter">
+    <div class="section-container">
+      <div class="section-header">
+        <span class="section-tag">COMPANIONS ON THE JOURNEY</span>
+        <h2 class="section-title">启程者与同伴 · 命运的羁绊</h2>
+        <p class="section-desc">在旅途中结识那些性格各异、心怀梦想的同伴，共同谱写属于你们的冒险回忆。</p>
+      </div>
+
+      <div class="character-card">
+        <div class="character-visual">
+          <div class="char-image-container">
+            <img src="./assets/images/concept_character.jpg" alt="寻风的旅人 艾尔" class="char-img" />
+            <div class="char-glow"></div>
+          </div>
+        </div>
+
+        <div class="character-info">
+          <div class="char-header">
+            <span class="char-role">「寻风的旅人」</span>
+            <h3 class="char-name">艾尔 · AL <span class="char-title-sub">The Windseeker</span></h3>
+          </div>
+
+          <div class="char-attributes">
+            <span class="attr-badge"><i class="attr-dot wind"></i> 属性 · 晨风</span>
+            <span class="attr-badge"><i class="attr-dot weapon"></i> 装备 · 星图罗盘与轻刃</span>
+            <span class="attr-badge"><i class="attr-dot role"></i> 定位 · 自由探索者</span>
+          </div>
+
+          <blockquote class="char-quote">
+            “风永远不会停下脚步，它只是在等待下一个愿意展开双翼的人。把故乡留在身后的金色风里吧，前方有更大、更温暖的世界。”
+          </blockquote>
+
+          <p class="char-bio">
+            自小在风起之地长大的少年，对远方的王城与未知的大陆充满了无限好奇。他并不擅长挥舞厚重的重剑，却拥有着能聆听风中讯息的绝佳天赋。只要带上他的小皮挎包与发光的罗盘，任何险阻都无法阻挡他前进的步伐。
+          </p>
+
+          <div class="char-skills">
+            <div class="skill-item">
+              <span class="skill-icon">🍃</span>
+              <div class="skill-detail">
+                <span class="skill-name">微风护佑</span>
+                <span class="skill-desc">召唤阵阵和风，提升全队在旷野中的滑翔与奔跑速度。</span>
+              </div>
+            </div>
+            <div class="skill-item">
+              <span class="skill-icon">🧭</span>
+              <div class="skill-detail">
+                <span class="skill-name">星图指引</span>
+                <span class="skill-desc">揭示隐藏在树林与遗迹深处的隐秘宝箱与古老地标。</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 第五屏：公测预约 · 踏上西幻之旅 (Pre-registration CTA) -->
+  <section class="preorder-section" id="sectionPreOrder">
+    <div class="section-container">
+      <div class="preorder-banner">
+        <div class="banner-bg-effects">
+          <div class="banner-glow-1"></div>
+          <div class="banner-glow-2"></div>
+        </div>
+
+        <div class="preorder-content">
+          <span class="preorder-tag">GLOBAL LAUNCH PRE-REGISTRATION</span>
+          <h2 class="preorder-title">全球公测预约开启 · 踏上金色旅途</h2>
+          <p class="preorder-desc">立即参与预约，可在全平台公测上线后，获得首发专属限定纪念礼包！</p>
+
+          <div class="rewards-preview">
+            <div class="reward-item">
+              <span class="reward-icon">🪽</span>
+              <span class="reward-name">限定背饰「初风之翼」</span>
+            </div>
+            <div class="reward-item">
+              <span class="reward-icon">✨</span>
+              <span class="reward-name">星辉货币 x 800</span>
+            </div>
+            <div class="reward-item">
+              <span class="reward-icon">👑</span>
+              <span class="reward-name">专属称号「自晨光启程」</span>
+            </div>
+          </div>
+
+          <form class="preorder-form" id="preorderForm" onsubmit="return false;">
+            <div class="input-group">
+              <input type="text" id="preorderInput" placeholder="请输入手机号或邮箱预约" required />
+              <button type="submit" class="btn-submit">立即免费预约</button>
+            </div>
+            <p class="form-hint">🔒 我们承诺保护您的隐私，仅在公测开放与发放奖励时与您联系。</p>
+          </form>
+
+          <div class="platforms-bar">
+            <span class="platform-label">支持公测与数据互通平台：</span>
+            <div class="platform-icons">
+              <span class="plat-badge">🖥️ PC / Mac</span>
+              <span class="plat-badge">📱 iOS / Android</span>
+              <span class="plat-badge">🎮 PlayStation® 5</span>
+              <span class="plat-badge">☁️ 云游戏平台</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 底部铭牌与版权说明 (Footer) -->
+  <footer class="footer">
+    <div class="section-container">
+      <div class="footer-content">
+        <div class="footer-left">
+          <div class="footer-logo">👑 龙与幻想 · DRAGON & FANTASY</div>
+          <p class="footer-slogan">用最简单的技术，创造最治愈的西幻冒险与视听感动。</p>
+          <div class="footer-copyright">
+            © 2026 DRAGON & FANTASY STUDIO. All Rights Reserved. 龙与幻想工作室 版权所有
+          </div>
+        </div>
+        <div class="footer-right">
+          <div class="age-rating">
+            <span class="age-num">12+</span>
+            <span class="age-text">适合12岁及以上<br>温馨探索 / 适度冒险</span>
+          </div>
+          <p class="disclaimer">
+            说明：本网页仅为《龙与幻想》AI 视频与游戏概念展示网页。采用 HTML5 / CSS3 / Vanilla JS 纯原生构建，无复杂框架。
+          </p>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <!-- 预约成功提示弹窗 (Toast Notification) -->
+  <div class="toast-modal" id="toastModal">
+    <div class="toast-content">
+      <span class="toast-icon">🎉</span>
+      <h3 class="toast-title">预约成功！</h3>
+      <p class="toast-desc">金色风起之时，我们在王城与平原的交界处等您启程！</p>
+      <button class="btn-toast-close" id="closeToast">确定并关闭</button>
+    </div>
+  </div>
+
+  <script src="./main.js"></script>
+</body>
+</html>
