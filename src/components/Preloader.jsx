@@ -53,7 +53,7 @@ export default function Preloader({ onFinish }) {
   }, [onFinish]);
 
   return (
-    <div id="preloader" class={`preloader ${isLoaded ? 'loaded' : ''}`}>
+    <div id="preloader" className={`preloader ${isLoaded ? 'loaded' : ''}`}>
       <div className="preloader-circle"></div>
       <div id="preloaderPercent" className="preloader-percent">{percent}%</div>
     </div>

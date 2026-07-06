@@ -25,7 +25,7 @@ export default function WorldLoreSection() {
             <div className="lore-stats">
               <div className="stat-item">
                 <span className="stat-num">64,000,000 m²</span>
-                <span class="stat-desc">无缝幻想无缝大地图</span>
+                <span className="stat-desc">无缝幻想无缝大地图</span>
               </div>
               <div className="stat-item">
                 <span className="stat-num">24 Hours</span>

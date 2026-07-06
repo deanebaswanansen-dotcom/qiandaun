@@ -39,12 +39,47 @@ export default function HeroSection() {
   const video2Ref = useRef(null);
   const video3Ref = useRef(null);
   const isChangingRef = useRef(false);
+  const activePlayerRef = useRef(1);
 
   const getVideoRef = (playerNum) => {
     if (playerNum === 1) return video1Ref.current;
     if (playerNum === 2) return video2Ref.current;
     return video3Ref.current;
   };
+
+  const getAllVideos = () => [video1Ref.current, video2Ref.current, video3Ref.current].filter(Boolean);
+
+  // 同步视频静音状态：Sound On 时当前视频取消静音播放自带音乐，其余静音
+  const syncVideoMuted = (soundEnabled, currentPlayer) => {
+    const heroEl = document.getElementById("hero");
+    const isHeroVisible = heroEl ? window.scrollY < heroEl.offsetHeight * 0.65 : true;
+
+    getAllVideos().forEach((v, idx) => {
+      const playerNum = idx + 1;
+      if (soundEnabled && isHeroVisible && playerNum === currentPlayer) {
+        v.muted = false;
+      } else {
+        v.muted = true;
+      }
+    });
+  };
+
+  // 订阅音频引擎开关，同步视频静音状态
+  useEffect(() => {
+    const unsubscribe = audioEngine.subscribe((enabled) => {
+      syncVideoMuted(enabled, activePlayerRef.current);
+    });
+
+    const handleScroll = () => {
+      syncVideoMuted(audioEngine.isSoundEnabled, activePlayerRef.current);
+    };
+    window.addEventListener("scroll", handleScroll);
+
+    return () => {
+      unsubscribe();
+      window.removeEventListener("scroll", handleScroll);
+    };
+  }, []);
 
   // 章节切换与视频交叉溶解
   const switchChapter = (index, forcePlay = true) => {
@@ -55,9 +90,8 @@ export default function HeroSection() {
 
     isChangingRef.current = true;
     setCurrentChapterIndex(index);
-    setTextKey(prev => prev + 1); // 触发文案重新出现动画
+    setTextKey(prev => prev + 1);
 
-    // 重置进度条
     setProgresses(prev => {
       const next = [...prev];
       for (let i = 0; i < 3; i++) {
@@ -67,11 +101,14 @@ export default function HeroSection() {
     });
 
     if (target.player !== activePlayer) {
-      const oldPlayer = activePlayer;
       setActivePlayer(target.player);
+      activePlayerRef.current = target.player;
 
       targetVideo.currentTime = target.startTime;
       if (forcePlay && !isPaused) targetVideo.play().catch(() => {});
+
+      // 切换视频静音状态：新视频取消静音，旧视频静音
+      syncVideoMuted(audioEngine.isSoundEnabled, target.player);
 
       setTimeout(() => {
         [1, 2, 3].forEach(num => {
@@ -86,7 +123,6 @@ export default function HeroSection() {
       if (forcePlay && !isPaused) targetVideo.play().catch(() => {});
     }
 
-    // 极致炫技模块 8：环境光呼吸脉搏，随章节色相映射
     const hueMap = [0, 140, 260];
     document.documentElement.style.setProperty('--ambient-hue', hueMap[index] + 'deg');
 
@@ -98,7 +134,7 @@ export default function HeroSection() {
   // 视频进度监听
   useEffect(() => {
     const handleTimeUpdate = (playerNum, index) => {
-      if (isChangingRef.current || isPaused || activePlayer !== playerNum) return;
+      if (isChangingRef.current || isPaused || activePlayerRef.current !== playerNum) return;
       const v = getVideoRef(playerNum);
       if (!v || !v.duration || isNaN(v.duration) || v.duration <= 0) return;
 
@@ -109,7 +145,6 @@ export default function HeroSection() {
         return next;
       });
 
-      // 接近终点自动切章
       if (v.currentTime >= v.duration - 0.5) {
         const nextIdx = (currentChapterIndex + 1) % chapters.length;
         switchChapter(nextIdx);
@@ -135,7 +170,6 @@ export default function HeroSection() {
     };
   }, [activePlayer, currentChapterIndex, isPaused]);
 
-  // 点击章节标签：切换或暂停/播放
   const handleNavItemClick = (index, e) => {
     e.stopPropagation();
     const activeVideo = getVideoRef(activePlayer);
@@ -160,7 +194,6 @@ export default function HeroSection() {
     if (el) el.scrollIntoView({ behavior: "smooth" });
   };
 
-  // 智能滚轮向下探索
   useEffect(() => {
     let wheelTimeout = null;
     const heroEl = document.getElementById("hero");
